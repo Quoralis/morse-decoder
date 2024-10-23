@@ -38,8 +38,38 @@ const MORSE_TABLE = {
 };
 
 function decode(expr) {
-    // write your solution here
+    let newStr = [];
+    // Разбиваем строку на части по 10 символов
+    for (let i = 0; i < expr.length; i += 10) {
+        newStr.push(expr.slice(i, i + 10));
+    }
+
+    let newStr1 = [];
+    // Преобразуем коды в символы Морзе
+    for (let j = 0; j < newStr.length; j++) {
+        newStr1.push(
+            newStr[j]
+                .replace(/00/g, "")       // убираем лишние нули
+                .replace(/10/g, ".")      // заменяем 10 на точку
+                .replace(/11/g, "-")      // заменяем 11 на тире
+                .replace(/\*{10}/, " ")   // заменяем ********** на пробел
+        );
+    }
+
+    let finalStr = '';
+    // Переводим символы Морзе в буквы
+    newStr1.forEach(key => {
+        if (key === ' ') {
+            finalStr += ' '; // добавляем пробел, если ключ — это пробел
+        } else if (key in MORSE_TABLE) {
+            finalStr += MORSE_TABLE[key]; // если ключ есть в таблице Морзе, добавляем букву
+        }
+    });
+
+    return finalStr; // возвращаем расшифрованную строку
 }
+
+
 
 module.exports = {
     decode
